@@ -1,0 +1,435 @@
+﻿@using ERP.Models.User
+@{
+    ViewBag.Title = "Department Transaction Transfer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- ========================================================= -->
+<!-- PAGE HEADER                                                -->
+<!-- ========================================================= -->
+<div class="page-header page-header-light">
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="@Url.Action("Index", "Home")"
+                   class="breadcrumb-item">
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+                </a>
+                <span class="breadcrumb-item">
+                    Inventory
+                </span>
+                <span class="breadcrumb-item active">
+                    Department Transaction Transfer
+                </span>
+            </div>
+            <a href="#"
+               class="header-elements-toggle text-default d-md-none">
+                <i class="icon-more"></i>
+            </a>
+        </div>
+        <div class="header-elements d-none">
+            <div class="breadcrumb justify-content-center">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- CONTENT                                                     -->
+<!-- ========================================================= -->
+<div class="content">
+    <div class="card">
+        <!-- ===================================================== -->
+        <!-- CARD HEADER                                            -->
+        <!-- ===================================================== -->
+        <div class="card-header header-elements-inline">
+            <h5 class="card-title">
+                List of Department Transfers
+            </h5>
+            <div class="header-elements">
+                <a href="@Url.Action("Transfer", "InvDepartmentTransfer")"
+                   class="btn btn-primary mr-2">
+                    <i class="icon-plus3 mr-1"></i>
+                    New Transfer
+                </a>
+
+                <button type="button"
+                        class="btn btn-light mr-2 text-success"
+                        onclick="$('#my-form').toggle();">
+                    <i class="icon-search4 mr-2"></i>
+                    Advance Search
+                </button>
+
+                <button type="button"
+                        class="btn btn-light text-danger-300"
+                        onclick="ResetSearch();">
+                    <i class="icon-reset mr-2"></i>
+                    Reset Search
+                </button>
+            </div>
+        </div>
+
+        <!-- ===================================================== -->
+        <!-- SEARCH FORM                                            -->
+        <!-- ===================================================== -->
+        <form id="my-form"
+              style="display:none;">
+            <div class="card-body">
+                <div class="row">
+                    <!-- Transaction Code -->
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>
+                                Transaction Code
+                            </label>
+                            <input type="text"
+                                   id="TransactionCode"
+                                   name="TransactionCode"
+                                   class="form-control"
+                                   placeholder="Transaction Code" />
+                        </div>
+                    </div>
+
+                    <!-- From Department -->
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>
+                                From Department
+                            </label>
+                            <select id="FromDepartmentId"
+                                    name="FromDepartmentId"
+                                    class="form-control">
+                                <option value="">
+                                    -- Select From Department --
+                                </option>
+                                @if (ViewBag.DepartmentList != null)
+                                {
+                                    foreach (var item in ViewBag.DepartmentList)
+                                    {
+                                        <option value="@item.RowId">
+                                            @item.DepartmentName
+                                        </option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- To Department -->
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>
+                                To Department
+                            </label>
+                            <select id="ToDepartmentId"
+                                    name="ToDepartmentId"
+                                    class="form-control">
+                                <option value="">
+                                    -- Select To Department --
+                                </option>
+                                @if (ViewBag.DepartmentList != null)
+                                {
+                                    foreach (var item in ViewBag.DepartmentList)
+                                    {
+                                        <option value="@item.RowId">
+                                            @item.DepartmentName
+                                        </option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- From Date -->
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>
+                                From Date
+                            </label>
+                            <input type="date"
+                                   id="FromDate"
+                                   name="FromDate"
+                                   class="form-control" />
+                        </div>
+                    </div>
+
+                    <!-- To Date -->
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>
+                                To Date
+                            </label>
+                            <input type="date"
+                                   id="ToDate"
+                                   name="ToDate"
+                                   class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEARCH FOOTER -->
+            <div class="card-footer bg-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <button type="button"
+                            class="btn btn-light text-brown-300"
+                            onclick="$('#my-form').hide();">
+                        Close Search Panel
+                    </button>
+                    <div>
+                        <button type="button"
+                                class="btn btn-light text-danger-300 mr-2"
+                                onclick="ResetSearch();">
+                            <i class="icon-reset mr-2"></i>
+                            Reset Search
+                        </button>
+                        <button type="button"
+                                class="btn btn-primary"
+                                onclick="ReloadDataTable();">
+                            <i class="icon-search4 mr-2"></i>
+                            Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- ===================================================== -->
+        <!-- DATATABLE                                              -->
+        <!-- ===================================================== -->
+        <table class="table datatable-column-search-inputs"
+               id="TransferItemList">
+            <thead>
+                <tr>
+                    <th>
+                        Transaction Code
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        From Department
+                    </th>
+                    <th>
+                        To Department
+                    </th>
+                    <th class="text-right">
+                        Total Amount
+                    </th>
+                    <th>
+                        Remarks
+                    </th>
+                    <th>
+                        Created By
+                    </th>
+                    <th class="text-center">
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section ChildpageJavaScript
+{
+    <script type="text/javascript">
+    var dtTable = null;
+
+    // =============================================================
+    // DATE FORMAT
+    // =============================================================
+    function FormatDate(value) {
+        if (!value)
+            return "";
+
+        var date;
+        var aspNetMatch = /\/Date\((\d+)\)\//.exec(value);
+
+        if (aspNetMatch) {
+            date = new Date(parseInt(aspNetMatch[1], 10));
+        }
+        else {
+            date = new Date(value);
+        }
+
+        if (isNaN(date.getTime()))
+            return value;
+
+        var day = ("0" + date.getDate()).slice(-2);
+        var month = ("0" + (date.getMonth() + 1)).slice(-2);
+        var year = date.getFullYear();
+
+        return day + "-" + month + "-" + year;
+    }
+
+    // =============================================================
+    // RELOAD DATATABLE
+    // =============================================================
+    function ReloadDataTable() {
+        if (dtTable == null)
+            return;
+
+        var searchUrl =
+            "@Url.Action("GetInvDepartmentTransferItemList", "InvDepartmentTransfer")?" +
+            $("#my-form").serialize();
+
+        dtTable.ajax.url(searchUrl).load();
+    }
+
+    // =============================================================
+    // RESET SEARCH
+    // =============================================================
+    function ResetSearch() {
+        $("#my-form")[0].reset();
+        ReloadDataTable();
+    }
+
+    // =============================================================
+    // DATATABLE
+    // =============================================================
+    function UpdateDataTable() {
+        dtTable = $("#TransferItemList").DataTable({
+            processing: true,
+            serverSide: true,
+            searching: true,
+            ordering: true,
+            pageLength: 10,
+            lengthMenu: [
+                [10, 25, 50, 100],
+                [10, 25, 50, 100]
+            ],
+
+            // -------------------------------------------------
+            // AJAX
+            // -------------------------------------------------
+            ajax: {
+                url:
+                    "@Url.Action("GetInvDepartmentTransferItemList", "InvDepartmentTransfer")?" +
+                    $("#my-form").serialize(),
+                type: "GET",
+                dataSrc: function (json) {
+                    if (json.error) {
+                        console.error("Server Error:", json.error);
+                    }
+                    return json.data || [];
+                },
+                error: function (xhr, status, error) {
+                    console.error(
+                        "Department Transfer error:",
+                        xhr.status,
+                        xhr.responseText);
+                }
+            },
+
+            // -------------------------------------------------
+            // COLUMNS
+            // -------------------------------------------------
+            columns: [
+                // Transaction Code
+                {
+                    data: "TransactionCode",
+                    defaultContent: ""
+                },
+                // Date
+                {
+                    data: "TransactionDate",
+                    defaultContent: "",
+                    render: function (data, type) {
+                        if (type === "display" || type === "filter") {
+                            return FormatDate(data);
+                        }
+                        return data;
+                    }
+                },
+                // From Department
+                {
+                    data: "FromDepartmentName",
+                    defaultContent: ""
+                },
+                // To Department
+                {
+                    data: "ToDepartmentName",
+                    defaultContent: ""
+                },
+                // Total Amount
+                {
+                    data: "TotalAmount",
+                    className: "text-right",
+                    defaultContent: "0.00",
+                    render: function (data) {
+                        return parseFloat(data || 0).toFixed(2);
+                    }
+                },
+                // Remarks
+                {
+                    data: "Remarks",
+                    defaultContent: ""
+                },
+                // Created By
+                {
+                    data: "CreateUser",
+                    defaultContent: ""
+                },
+                // =================================================
+                // ACTION
+                // =================================================
+                {
+                    data: "RowId",
+                    orderable: false,
+                    searchable: false,
+                    className: "text-center",
+                    render: function (data, type, row) {
+                        var viewUrl =
+                            "@Url.Action("Transfer", "InvDepartmentTransfer")" +
+                            "?id=" + encodeURIComponent(data);
+
+                        return (
+                            "<div class='list-icons'>" +
+                                "<div class='dropdown'>" +
+                                    "<a href='#' " +
+                                       "class='list-icons-item' " +
+                                       "data-toggle='dropdown'>" +
+                                        "<i class='icon-menu9'></i>" +
+                                    "</a>" +
+                                    "<div class='dropdown-menu dropdown-menu-right'>" +
+                                        "<a href='" + viewUrl + "' " +
+                                           "class='dropdown-item text-primary'>" +
+                                            "<i class='icon-eye mr-2'></i>" +
+                                            " View Transfer" +
+                                        "</a>" +
+                                    "</div>" +
+                                "</div>" +
+                            "</div>"
+                        );
+                    }
+                }
+            ],
+
+            // -------------------------------------------------
+            // DEFAULT SORT
+            // -------------------------------------------------
+            order: [[1, "desc"]],
+
+            // -------------------------------------------------
+            // LANGUAGE
+            // -------------------------------------------------
+            language: {
+                processing: "Loading...",
+                emptyTable: "No transfer records found.",
+                zeroRecords: "No matching transfer records found."
+            }
+        });
+    }
+
+    // =============================================================
+    // DOCUMENT READY
+    // =============================================================
+    $(document).ready(function () {
+        UpdateDataTable();
+    });
+    </script>
+}

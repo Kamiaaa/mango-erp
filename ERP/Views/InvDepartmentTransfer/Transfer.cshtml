@@ -1,0 +1,495 @@
+﻿@using ERP.Models.User
+@{
+    ViewBag.Title = "Department Transfer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var user = ViewBag.User as UserInfo;
+}
+<div class="page-header page-header-light">
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="@Url.Action("Index", "Home")"
+                   class="breadcrumb-item">
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+                </a>
+                <a href="@Url.Action("Index", "InvDepartmentTransfer")"
+                   class="breadcrumb-item">
+                    Department Transfer
+                </a>
+                <span class="breadcrumb-item active">
+                    New Transfer
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="card">
+        <!-- =====================================================
+             HEADER
+             ===================================================== -->
+        <div class="card-header header-elements-inline">
+            <h5 class="card-title">
+                Department Transfer
+            </h5>
+            <div class="header-elements">
+                <a href="@Url.Action("Index", "InvDepartmentTransfer")"
+                   class="btn btn-light">
+                    <i class="icon-arrow-left13 mr-2"></i>
+                    Back to List
+                </a>
+            </div>
+        </div>
+
+        <div class="card-body">
+
+            <!-- =================================================
+                 FROM / TO / REMARKS
+                 ================================================= -->
+            <div class="row mb-3">
+                <!-- FROM -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="font-weight-semibold">
+                            From Department
+                            <span class="text-danger">*</span>
+                            <small class="text-muted">
+                                (Source)
+                            </small>
+                        </label>
+                        <select id="FromDepartmentId"
+                                class="form-control">
+                            <option value="">
+                                -- Select From Department --
+                            </option>
+                            @if (ViewBag.DepartmentList != null)
+                            {
+                                foreach (var dept in ViewBag.DepartmentList)
+                                {
+                                    <option value="@dept.RowId">
+                                        @dept.DepartmentName
+                                    </option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <!-- TO -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="font-weight-semibold">
+                            To Department
+                            <span class="text-danger">*</span>
+                            <small class="text-muted">
+                                (Store / Destination)
+                            </small>
+                        </label>
+                        <select id="ToDepartmentId"
+                                class="form-control">
+                            <option value="">
+                                -- Select To Department --
+                            </option>
+                            @if (ViewBag.DepartmentList != null)
+                            {
+                                foreach (var dept in ViewBag.DepartmentList)
+                                {
+                                    <option value="@dept.RowId">
+                                        @dept.DepartmentName
+                                    </option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <!-- REMARKS -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="font-weight-semibold">
+                            Remarks
+                        </label>
+                        <input type="text"
+                               id="Remarks"
+                               class="form-control"
+                               maxlength="500"
+                               placeholder="Optional transfer remarks" />
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <!-- =================================================
+                 ADD ITEM SECTION
+                 ================================================= -->
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label class="font-weight-semibold">
+                        Item <span class="text-danger">*</span>
+                    </label>
+                    <select id="ItemId" class="form-control form-control-sm">
+                        <option value="">-- Select Item --</option>
+                        @if (ViewBag.ItemList != null)
+                        {
+                            foreach (var item in ViewBag.ItemList)
+                            {
+                                <option value="@item.RowId"
+                                        data-unit="@item.UnitId"
+                                        data-price="@item.UnitPrice">
+                                    @item.ItemName
+                                </option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label class="font-weight-semibold">
+                        Unit <span class="text-danger">*</span>
+                    </label>
+                    <select id="UnitId" class="form-control form-control-sm">
+                        <option value="">-- Select Unit --</option>
+                        @if (ViewBag.UnitList != null)
+                        {
+                            foreach (var unit in ViewBag.UnitList)
+                            {
+                                <option value="@unit.RowId">
+                                    @unit.MinUnitName
+                                </option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label class="font-weight-semibold">
+                        Quantity <span class="text-danger">*</span>
+                    </label>
+                    <input type="number"
+                           id="TransferQty"
+                           class="form-control form-control-sm text-right"
+                           min="0"
+                           step="0.0001"
+                           value="0" />
+                </div>
+
+                <div class="col-md-2">
+                    <label class="font-weight-semibold">
+                        Unit Price
+                    </label>
+                    <input type="text"
+                           id="UnitPrice"
+                           class="form-control form-control-sm text-right"
+                           readonly />
+                </div>
+
+                <div class="col-md-2">
+                    <label class="font-weight-semibold">
+                        Conv. Rate
+                    </label>
+                    <input type="text"
+                           id="ConversionRate"
+                           class="form-control form-control-sm text-right"
+                           value="1.00"
+                           readonly />
+                </div>
+
+                <div class="col-md-1">
+                    <label class="font-weight-semibold">&nbsp;</label>
+                    <button type="button"
+                            id="btnAddItem"
+                            class="btn btn-primary btn-sm btn-block">
+                        <i class="icon-plus3"></i> Add
+                    </button>
+                </div>
+            </div>
+
+            <!-- =================================================
+                 DETAIL TABLE
+                 ================================================= -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-sm"
+                       id="TransferDetailTable">
+                    <thead class="bg-light">
+                        <tr>
+                            <th style="width:40px;" class="text-center">#</th>
+                            <th style="min-width:180px;">Item</th>
+                            <th style="width:110px;">Unit</th>
+                            <th class="text-right" style="width:110px;">Quantity</th>
+                            <th class="text-right" style="width:100px;">Conv. Rate</th>
+                            <th class="text-right" style="width:110px;">Unit Price</th>
+                            <th class="text-right" style="width:120px;">Total</th>
+                            <th style="width:80px;" class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dynamic rows -->
+                    </tbody>
+                    <tfoot>
+                        <tr class="font-weight-bold">
+                            <td colspan="6" class="text-right">Grand Total</td>
+                            <td class="text-right">
+                                <span id="GrandTotal">0.00</span>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <!-- =====================================================
+             FOOTER
+             ===================================================== -->
+        <div class="card-footer bg-white">
+            <div class="row">
+                <div class="col-md-8">
+                    <div id="transferError"
+                         class="alert alert-danger"
+                         style="display:none;">
+                    </div>
+                </div>
+                <div class="col-md-4 text-right">
+                    <a href="@Url.Action("Index", "InvDepartmentTransfer")"
+                       class="btn btn-light">
+                        <i class="icon-cross2 mr-2"></i>
+                        Cancel
+                    </a>
+                    <button type="button"
+                            id="btnTransfer"
+                            class="btn btn-success">
+                        <i class="icon-checkmark3 mr-2"></i>
+                        Transfer Items
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section ChildpageJavaScript
+{
+    <script type="text/javascript">
+    // =========================================================
+    // HELPERS
+    // =========================================================
+    function toDecimal(value) {
+        var n = parseFloat(value);
+        return isNaN(n) ? 0 : n;
+    }
+
+    function formatDecimal(value, places) {
+        return toDecimal(value).toFixed(places || 2);
+    }
+
+    var transferLines = [];
+
+    // =========================================================
+    // RENDER TABLE
+    // =========================================================
+    function renderTable() {
+        var $tbody = $("#TransferDetailTable tbody");
+        $tbody.empty();
+
+        if (transferLines.length === 0) {
+            $tbody.append(
+                '<tr><td colspan="8" class="text-center text-muted">' +
+                'No items added yet.</td></tr>'
+            );
+            $("#GrandTotal").text("0.00");
+            return;
+        }
+
+        var grandTotal = 0;
+
+        transferLines.forEach(function (line, index) {
+            grandTotal += toDecimal(line.ConversionTotal);
+
+            var row = '<tr data-index="' + index + '">' +
+                '<td class="text-center">' + (index + 1) + '</td>' +
+                '<td><strong>' + line.ItemName + '</strong></td>' +
+                '<td>' + line.UnitName + '</td>' +
+                '<td class="text-right">' + formatDecimal(line.TransferQuantity, 4) + '</td>' +
+                '<td class="text-right">' + formatDecimal(line.ConversionRate, 2) + '</td>' +
+                '<td class="text-right">' + formatDecimal(line.ConversionPrice, 2) + '</td>' +
+                '<td class="text-right">' + formatDecimal(line.ConversionTotal, 2) + '</td>' +
+                '<td class="text-center">' +
+                '<button type="button" class="btn btn-sm btn-danger btn-remove" title="Remove">' +
+                '<i class="icon-trash"></i></button></td>' +
+                '</tr>';
+
+            $tbody.append(row);
+        });
+
+        $("#GrandTotal").text(formatDecimal(grandTotal, 2));
+    }
+
+    // =========================================================
+    // DOCUMENT READY
+    // =========================================================
+    $(document).ready(function () {
+
+        // Item change → set default unit & price
+        $("#ItemId").on("change", function () {
+            var $option = $(this).find("option:selected");
+            var unitId = $option.data("unit") || "";
+            var price = $option.data("price") || 0;
+
+            $("#UnitId").val(unitId);
+            $("#UnitPrice").val(formatDecimal(price, 2));
+            $("#ConversionRate").val("1.00");
+        });
+
+        // Add Item
+        $("#btnAddItem").on("click", function () {
+            var itemId = $("#ItemId").val();
+            var itemName = $("#ItemId option:selected").text().trim();
+            var unitId = $("#UnitId").val();
+            var unitName = $("#UnitId option:selected").text().trim();
+            var qty = toDecimal($("#TransferQty").val());
+            var price = toDecimal($("#UnitPrice").val());
+            var rate = toDecimal($("#ConversionRate").val()) || 1;
+
+            if (!itemId) {
+                alert("Please select Item.");
+                return;
+            }
+            if (!unitId) {
+                alert("Please select Unit.");
+                return;
+            }
+            if (qty <= 0) {
+                alert("Quantity must be greater than zero.");
+                return;
+            }
+
+            // Prevent duplicate
+            var exists = transferLines.some(function (x) {
+                return x.ItemId === itemId && x.UnitId === unitId;
+            });
+
+            if (exists) {
+                alert("This item with the same unit is already added.");
+                return;
+            }
+
+            var total = Math.round((qty * price) * 100) / 100;
+
+            transferLines.push({
+                ItemId: itemId,
+                ItemName: itemName,
+                UnitId: unitId,
+                UnitName: unitName,
+                TransferQuantity: qty,
+                ConversionRate: rate,
+                ConversionPrice: price,
+                ConversionTotal: total,
+                UnitConversionId: null,
+                Remarks: ""
+            });
+
+            // Reset
+            $("#ItemId").val("");
+            $("#UnitId").val("");
+            $("#TransferQty").val("0");
+            $("#UnitPrice").val("");
+            $("#ConversionRate").val("1.00");
+
+            renderTable();
+        });
+
+        // Remove Item
+        $(document).on("click", ".btn-remove", function () {
+            var index = $(this).closest("tr").data("index");
+            transferLines.splice(index, 1);
+            renderTable();
+        });
+
+        // Transfer Button
+        $("#btnTransfer").on("click", function () {
+            var $button = $(this);
+            var $error = $("#transferError");
+            $error.hide().text("");
+
+            var fromDepartmentId = $("#FromDepartmentId").val();
+            var toDepartmentId = $("#ToDepartmentId").val();
+            var remarks = $("#Remarks").val();
+
+            if (!fromDepartmentId) {
+                $error.text("Please select From Department.").show();
+                $("#FromDepartmentId").focus();
+                return;
+            }
+
+            if (!toDepartmentId) {
+                $error.text("Please select To Department.").show();
+                $("#ToDepartmentId").focus();
+                return;
+            }
+
+            if (fromDepartmentId === toDepartmentId) {
+                $error.text("From Department and To Department cannot be the same.").show();
+                return;
+            }
+
+            if (transferLines.length === 0) {
+                $error.text("Please add at least one item.").show();
+                return;
+            }
+
+            if (!confirm("Are you sure you want to transfer these items?")) {
+                return;
+            }
+
+            $button.prop("disabled", true)
+                   .html("<i class='icon-spinner2 spinner mr-2'></i> Processing...");
+
+            $.ajax({
+                url: '@Url.Action("Transfer", "InvDepartmentTransfer")',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    fromDepartmentId: fromDepartmentId,
+                    toDepartmentId: toDepartmentId,
+                    remarks: remarks,
+                    TransferLinesJson: JSON.stringify(transferLines)
+                },
+                success: function (response) {
+                    if (response && response.ResponseStatus === 1) {
+                        alert(response.ResponseMessage || "Items transferred successfully.");
+                        window.location.href = '@Url.Action("Index", "InvDepartmentTransfer")';
+                        return;
+                    }
+
+                    alert(response && response.ResponseMessage
+                        ? response.ResponseMessage
+                        : "Transfer failed.");
+
+                    $button.prop("disabled", false)
+                           .html("<i class='icon-checkmark3 mr-2'></i> Transfer Items");
+                },
+                error: function (xhr) {
+                    console.error(xhr);
+                    var message = "An unexpected error occurred while transferring.";
+
+                    if (xhr.responseJSON && xhr.responseJSON.ResponseMessage) {
+                        message = xhr.responseJSON.ResponseMessage;
+                    }
+
+                    alert(message);
+
+                    $button.prop("disabled", false)
+                           .html("<i class='icon-checkmark3 mr-2'></i> Transfer Items");
+                }
+            });
+        });
+
+        // Initial
+        renderTable();
+    });
+    </script>
+}
