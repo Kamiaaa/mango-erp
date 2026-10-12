@@ -1,12 +1,37 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\UseR\\Desktop\\ERP\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{80452AC0-ADEF-42F7-9F4A-5C2D1B320684}|ERP\\ERP.csproj|c:\\users\\user\\desktop\\erp\\erp\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{80452AC0-ADEF-42F7-9F4A-5C2D1B320684}|ERP\\ERP.csproj|solutionrelative:erp\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\UseR\\Desktop\\ERP\\ERP\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "ERP\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\UseR\\Desktop\\ERP\\ERP\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "ERP\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAABgAAAAAAAAAAAAAACYAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-10-12T10:48:32.237Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }
