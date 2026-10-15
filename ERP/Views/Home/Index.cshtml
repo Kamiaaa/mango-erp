@@ -4,110 +4,117 @@
 }
 
 <!-- Page header -->
-<div class="page-header page-header-light ">
-
-
+<div class="page-header page-header-light">
     <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
         <div class="d-flex">
             <div class="breadcrumb">
                 <a href="@Url.Action("Index", "Home")" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
                 <span class="breadcrumb-item active">Dashboard</span>
             </div>
-
         </div>
-
-
-
     </div>
 </div>
 <!-- /page header -->
 <!-- Content area -->
 <div class="content">
 
-    <!-- Individual column searching (text inputs) -->
-
     <div class="card" id="successdiv">
         <div class="card-header bg-white header-elements-inline">
-            <h6 class="card-title">Welcome, <span class="text-danger">@ViewBag.User.DisplayName</span></h6>
-
+            <h6 class="card-title">Welcome, <span class="text-danger">@ViewBag.User.DisplayName</span> <span class="badge badge-danger ml-2">System Administrator</span></h6>
         </div>
 
         <div class="card-body">
             <div class="form-group row">
-
                 <div class="col-lg-12 color-selector-active text-success">
-                    <h2 class="text-center">  Mizan ERP System </h2>
+                    <h2 class="text-center"> Mango ERP System - IIG Management </h2>
                 </div>
             </div>
-
         </div>
 
         <div class="card-footer bg-white">
             <div class="row">
                 <div class="col-sm-12 col-md-12">
-                    <h3 class="section-title text-left text-danger" style="padding-top:30px">Mango Teleservices Limited</h3>
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <div class="d-flex align-items-top">
-                                <i class="icon-home mr-3 icon"></i>
-                                <div>
-                                    <div style="font-weight:bold;">Head Office</div>
-                                    <div>Police Plaza Concord, Tower-02 (7th Floor), Plot#2, Road#144, Gulshan-1, Dhaka-1212, Bangladesh</div>
+                    <h3 class="section-title text-left text-danger mb-4" style="padding-top:10px">System Overview Dashboard</h3>
+
+                    <!-- Overview Cards Row -->
+                    <div class="row">
+
+                        <!-- IIG Inventory Card -->
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card bg-teal text-white h-100">
+                                <div class="card-body d-flex flex-column justify-content-between">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h3 class="font-weight-semibold mb-0">1.2 Gbps</h3>
+                                            <span class="text-uppercase font-size-xs">IIG Bandwidth / Inventory</span>
+                                        </div>
+                                        <i class="icon-server icon-3x opacity-75"></i>
+                                    </div>
+                                    <div class="mt-3">
+                                        <span class="badge badge-teal-800 mr-2">Active Upstreams: 4</span>
+                                        <span class="badge badge-teal-800">Ports Available: 12</span>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-teal-800 d-flex justify-content-between align-items-center py-2">
+                                    <span class="font-size-sm">Manage Inventory & Links</span>
+                                    <a href="@Url.Action("Index", "Inventory")" class="text-white font-weight-semibold">View Details <i class="icon-arrow-right14 ml-1"></i></a>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <div class="d-flex align-items-top">
-                                <i class="icon-office  mr-3 icon"></i>
-                                <div>
-                                    @*<div style="font-weight:bold;">Dhaka Office</div>
-                                        <div>House-296 (Ground Floor), Lane-4, DOHS Baridhara, Dhaka-1206, Bangladesh.</div>*@
+
+                        <!-- Sales Card -->
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card bg-primary text-white h-100">
+                                <div class="card-body d-flex flex-column justify-content-between">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h3 class="font-weight-semibold mb-0">48</h3>
+                                            <span class="text-uppercase font-size-xs">Active IIG Clients</span>
+                                        </div>
+                                        <i class="icon-cart-add icon-3x opacity-75"></i>
+                                    </div>
+                                    <div class="mt-3">
+                                        <span class="badge badge-primary-800 mr-2">New Orders: 5</span>
+                                        <span class="badge badge-primary-800">Pending Approvals: 2</span>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-primary-800 d-flex justify-content-between align-items-center py-2">
+                                    <span class="font-size-sm">Manage Sales & Subscriptions</span>
+                                    <a href="@Url.Action("Index", "Sales")" class="text-white font-weight-semibold">View Details <i class="icon-arrow-right14 ml-1"></i></a>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <div class="d-flex ">
-                                <i class="icon-phone  mr-3"></i>
-                                <div>
-                                    +88 02 8412506, +88 01879 496 827
+
+                        <!-- Accounts Card -->
+                        <div class="col-lg-4 col-md-12 mb-4">
+                            <div class="card bg-pink text-white h-100">
+                                <div class="card-body d-flex flex-column justify-content-between">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h3 class="font-weight-semibold mb-0">৳ 12,45,000</h3>
+                                            <span class="text-uppercase font-size-xs">Monthly Revenue (Billed)</span>
+                                        </div>
+                                        <i class="icon-cash3 icon-3x opacity-75"></i>
+                                    </div>
+                                    <div class="mt-3">
+                                        <span class="badge badge-pink-800 mr-2">Due Invoices: 8</span>
+                                        <span class="badge badge-pink-800">Collection Rate: 94%</span>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-pink-800 d-flex justify-content-between align-items-center py-2">
+                                    <span class="font-size-sm">Manage Billing & Accounts</span>
+                                    <a href="@Url.Action("Index", "Accounts")" class="text-white font-weight-semibold">View Details <i class="icon-arrow-right14 ml-1"></i></a>
                                 </div>
                             </div>
                         </div>
+
                     </div>
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <div class="d-flex ">
-                                <i class="icon-envelope   mr-3"></i>
-                                <div>
-                                    <a href="mailto:reach@gm-software.com" target="_blank">reach@gm-software.com</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <div class="d-flex ">
-                                <i class="icon-dribbble3   mr-3"></i>
-                                <div>
-                                    @*<a href="https://www.gm-software.com" target="_blank">www.gm-software.com</a>*@
-                                    <a href="http://mango.com.bd" target="_blank">www.mango.com.bd</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- /Overview Cards Row -->
 
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- /individual column searching (text inputs) -->
-
-
 
 </div>
 <!-- /content area -->
